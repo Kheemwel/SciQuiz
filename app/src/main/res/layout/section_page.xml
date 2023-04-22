@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical">
+
+	<LinearLayout
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
+		android:orientation="horizontal"
+		android:layout_alignParentTop="true"
+		android:id="@+id/sectionpageLinearLayout1"
+		android:layout_alignParentLeft="true"
+		android:layout_alignParentRight="true">
+
+		<TextView
+			android:layout_height="wrap_content"
+			android:text="Choose a Topic"
+			android:layout_width="match_parent"
+			android:gravity="center"
+			android:textStyle="bold"
+			android:typeface="serif"
+			android:textSize="30sp"
+			android:background="@color/cyan_500"
+			android:textColor="#FFFFFF"
+			android:padding="10dp"
+			android:id="@+id/sectionpageTextView1"/>
+
+	</LinearLayout>
+
+	<RelativeLayout
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
+		android:layout_weight="1.0">
+
+		<androidx.viewpager.widget.ViewPager
+				android:layout_height="wrap_content"
+				android:layout_width="match_parent"
+				android:id="@+id/section_viewpager"/>
+		<com.google.android.material.floatingactionbutton.FloatingActionButton
+				android:layout_alignParentBottom="true"
+				android:layout_height="wrap_content"
+				android:layout_width="wrap_content"
+				app:backgroundTint="@color/blue_700"
+				android:src="@drawable/arrow_left"
+				android:id="@+id/arrowleft_floatingbutton"
+				android:onClick="ArrowLeft"
+				android:layout_marginStart="5dp"
+				android:layout_marginBottom="40dp"
+				android:layout_alignParentEnd="false"
+				android:layout_alignParentLeft="true"/>
+
+		<com.google.android.material.floatingactionbutton.FloatingActionButton
+			android:layout_alignParentBottom="true"
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:layout_alignParentEnd="true"
+			app:backgroundTint="@color/blue_700"
+			android:src="@drawable/arrow_right"
+			android:id="@+id/arrowright_floatingbutton"
+			android:onClick="ArrowRight"
+			android:layout_marginBottom="40dp"
+			android:layout_marginEnd="5dp"
+			android:layout_alignParentStart="false"/>
+
+		<Button
+			android:layout_height="wrap_content"
+			android:text="START"
+			android:layout_width="wrap_content"
+			android:onClick="StartQuiz"
+			android:layout_centerVertical="true"
+			android:layout_alignParentBottom="true"
+			android:layout_centerHorizontal="true"
+			android:layout_marginBottom="40dp"
+			android:textStyle="bold"
+			android:textColor="#FFFFFF"
+			android:textSize="20sp"
+			android:id="@+id/sectionpageButton1"
+			android:background="@drawable/bluebutton"/>
+
+	</RelativeLayout>
+
+	<com.google.android.material.bottomnavigation.BottomNavigationView
+		android:id="@+id/bottomnavigation_sectionpage"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		app:itemBackground="@color/cyan_700"
+		app:itemTextColor="#ffffff"
+		app:itemIconTint="#ffffff"
+		app:menu="@menu/bottom_navigation"/>
+
+</LinearLayout>
+

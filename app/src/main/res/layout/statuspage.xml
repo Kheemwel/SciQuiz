@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:orientation="vertical">
+
+	<LinearLayout
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
+		android:orientation="horizontal">
+
+		<include
+			android:id="@+id/toolbar"
+			layout="@layout/toolbar"/>
+
+	</LinearLayout>
+
+	<LinearLayout
+		android:layout_height="match_parent"
+		android:layout_width="match_parent"
+		android:orientation="vertical">
+
+		<TextView
+			android:layout_height="wrap_content"
+			android:text="Status"
+			android:layout_width="wrap_content"
+			android:layout_margin="10dp"
+			android:layout_gravity="center"
+			android:textSize="30sp"
+			android:textColor="#FFFFFF"/>
+
+		<LinearLayout
+			android:layout_height="wrap_content"
+			android:layout_width="match_parent"
+			android:orientation="horizontal"
+			android:gravity="center"
+			android:padding="10dp">
+
+			<ImageView
+				android:layout_height="40dp"
+				android:background="@drawable/user"
+				android:layout_width="40dp"/>
+
+			<EditText
+				android:layout_height="wrap_content"
+				android:ems="10"
+				android:layout_width="wrap_content"
+				android:hint="Username"
+				android:text="Username"
+				android:textSize="20sp"
+				android:textColor="#FFFFFF"
+				android:id="@+id/username_edittext"
+				android:imeOptions="actionDone"
+				android:inputType="text"/>
+
+		</LinearLayout>
+
+		<GridLayout
+			android:layout_height="match_parent"
+			android:layout_width="match_parent"
+			android:rowCount="6"
+			android:columnCount="2"
+			android:orientation="vertical"
+			android:padding="10dp">
+
+			<LinearLayout
+				android:layout_height="wrap_content"
+				android:layout_width="match_parent"
+				android:orientation="horizontal">
+
+				<TextView
+					android:layout_height="wrap_content"
+					android:text="SUBJECTS"
+					android:layout_width="wrap_content"
+					android:layout_weight="1.0"
+					android:width="10dp"
+					android:gravity="center"
+					android:textSize="25sp"
+					android:typeface="serif"
+					android:textColor="#FFFFFF"/>
+
+				<TextView
+					android:layout_height="wrap_content"
+					android:text="AVERAGE"
+					android:layout_width="wrap_content"
+					android:layout_weight="1.0"
+					android:width="10dp"
+					android:gravity="center"
+					android:textSize="25sp"
+					android:typeface="serif"
+					android:textColor="#FFFFFF"/>
+
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_height="wrap_content"
+				android:layout_width="match_parent"
+				android:orientation="horizontal">
+
+				<TextView
+						android:layout_height="match_parent"
+						android:text="Astronomy"
+						android:layout_width="wrap_content"
+						android:layout_weight="1.0"
+						android:width="10dp"
+						android:textSize="20sp"
+						android:textColor="#03A9F4"
+						android:gravity="center"/>
+
+				<TextView
+					android:layout_height="wrap_content"
+					android:layout_width="wrap_content"
+					android:width="10dp"
+					android:layout_weight="1.0"
+					android:textSize="20sp"
+					android:id="@+id/astronomy_average"
+					android:gravity="center"/>
+
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_height="wrap_content"
+				android:layout_width="match_parent"
+				android:orientation="horizontal">
+
+				<TextView
+					android:layout_height="wrap_content"
+					android:text="Biology"
+					android:layout_width="wrap_content"
+					android:layout_weight="1.0"
+					android:width="10dp"
+					android:textSize="20sp"
+					android:textColor="#FF9800"
+					android:gravity="center"/>
+
+				<TextView
+					android:layout_height="wrap_content"
+					android:layout_width="wrap_content"
+					android:width="10dp"
+					android:layout_weight="1.0"
+					android:textSize="20sp"
+					android:id="@+id/biology_average"
+					android:gravity="center"/>
+
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_height="wrap_content"
+				android:layout_width="match_parent"
+				android:orientation="horizontal">
+
+				<TextView
+					android:layout_height="wrap_content"
+					android:text="Chemistry"
+					android:layout_width="wrap_content"
+					android:layout_weight="1.0"
+					android:width="10dp"
+					android:textSize="20sp"
+					android:textColor="#E91E63"
+					android:gravity="center"/>
+
+				<TextView
+					android:layout_height="wrap_content"
+					android:layout_width="wrap_content"
+					android:width="10dp"
+					android:layout_weight="1.0"
+					android:textSize="20sp"
+					android:id="@+id/chemistry_average"
+					android:gravity="center"/>
+
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_height="wrap_content"
+				android:layout_width="match_parent"
+				android:orientation="horizontal">
+
+				<TextView
+					android:layout_height="wrap_content"
+					android:text="Earth Science"
+					android:layout_width="wrap_content"
+					android:layout_weight="1.0"
+					android:width="10dp"
+					android:textSize="20sp"
+					android:textColor="#4CAF50"
+					android:gravity="center"/>
+
+				<TextView
+					android:layout_height="wrap_content"
+					android:layout_width="wrap_content"
+					android:width="10dp"
+					android:layout_weight="1.0"
+					android:textSize="20sp"
+					android:id="@+id/earthscience_average"
+					android:gravity="center"/>
+
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_height="wrap_content"
+				android:layout_width="match_parent"
+				android:orientation="horizontal">
+
+				<TextView
+					android:layout_height="wrap_content"
+					android:text="Physics"
+					android:layout_width="wrap_content"
+					android:layout_weight="1.0"
+					android:width="10dp"
+					android:textSize="20sp"
+					android:textColor="#FFC107"
+					android:gravity="center"/>
+
+				<TextView
+					android:layout_height="wrap_content"
+					android:layout_width="wrap_content"
+					android:width="10dp"
+					android:layout_weight="1.0"
+					android:textSize="20sp"
+					android:id="@+id/physics_average"
+					android:gravity="center"/>
+
+			</LinearLayout>
+
+		</GridLayout>
+
+	</LinearLayout>
+
+</LinearLayout>
+

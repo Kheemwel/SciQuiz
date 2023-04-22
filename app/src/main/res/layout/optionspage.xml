@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:orientation="vertical">
+
+	<LinearLayout
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
+		android:orientation="horizontal">
+
+		<include
+			android:id="@+id/toolbar"
+			layout="@layout/toolbar"/>
+
+	</LinearLayout>
+
+	<LinearLayout
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
+		android:orientation="vertical"
+		android:gravity="center"
+		android:padding="10dp"
+		android:background="#263238">
+
+		<TextView
+			android:layout_height="wrap_content"
+			android:text="Options"
+			android:layout_width="wrap_content"
+			android:layout_margin="10dp"
+			android:textSize="30sp"
+			android:textColor="#FFFFFF"/>
+
+		<LinearLayout
+			android:layout_height="wrap_content"
+			android:layout_width="match_parent"
+			android:orientation="horizontal"
+			android:gravity="center"
+			android:padding="10dp">
+
+			<ImageView
+				android:layout_height="40dp"
+				android:layout_width="40dp"
+				android:src="@drawable/sound_on"
+				android:id="@+id/sound_image"/>
+
+			<Switch
+				android:layout_height="wrap_content"
+				android:layout_width="wrap_content"
+				android:onClick="SoundOption"
+				android:layout_marginStart="10dp"
+				android:id="@+id/sound_option"/>
+
+		</LinearLayout>
+
+		<LinearLayout
+			android:layout_height="wrap_content"
+			android:layout_width="match_parent"
+			android:orientation="vertical"
+			android:layout_margin="10dp"
+			android:gravity="center">
+
+			<TextView
+				android:layout_height="wrap_content"
+				android:text="Color Scheme:"
+				android:layout_width="wrap_content"
+				android:textColor="#FFFFFF"
+				android:textSize="20sp"/>
+
+			<RadioGroup
+				android:layout_height="wrap_content"
+				android:layout_width="match_parent"
+				android:orientation="horizontal"
+				android:gravity="center"
+				android:id="@+id/radiogroup1">
+
+				<RadioButton
+					android:layout_height="wrap_content"
+					android:layout_width="wrap_content"
+					android:layout_margin="10dp"
+					android:id="@+id/radiobutton1"
+					android:button="@drawable/bluehue_radiobutton"/>
+
+				<RadioButton
+					android:layout_height="wrap_content"
+					android:layout_width="wrap_content"
+					android:layout_margin="10dp"
+					android:id="@+id/radiobutton2"
+					android:button="@drawable/greenhue_radiobutton"/>
+
+				<RadioButton
+					android:layout_height="wrap_content"
+					android:layout_width="wrap_content"
+					android:layout_margin="10dp"
+					android:id="@+id/radiobutton3"
+					android:button="@drawable/purplehue_radiobutton"/>
+
+				<RadioButton
+					android:layout_height="wrap_content"
+					android:layout_width="wrap_content"
+					android:layout_margin="10dp"
+					android:id="@+id/radiobutton4"
+					android:button="@drawable/orangehue_radiobutton"/>
+
+			</RadioGroup>
+
+		</LinearLayout>
+
+	</LinearLayout>
+
+	<ScrollView
+		android:layout_height="match_parent"
+		android:layout_width="match_parent"
+		android:padding="10dp">
+
+		<LinearLayout
+			android:layout_height="match_parent"
+			android:layout_width="match_parent"
+			android:orientation="vertical"
+			android:gravity="center">
+
+			<TextView
+				android:layout_height="wrap_content"
+				android:text="Credits"
+				android:layout_width="wrap_content"
+				android:textSize="20sp"
+				android:textColor="#FFFFFF"/>
+
+			<TextView
+				android:layout_height="wrap_content"
+				android:text="Creator"
+				android:layout_width="wrap_content"
+				android:textColor="#00FFFF"
+				android:textSize="18sp"
+				android:layout_marginTop="20dp"/>
+
+			<TextView
+				android:layout_height="wrap_content"
+				android:text="Kimwel Lourence Beller"
+				android:layout_width="wrap_content"
+				android:textSize="18sp"/>
+
+			<TextView
+				android:layout_height="wrap_content"
+				android:text="Arts/Design"
+				android:layout_width="wrap_content"
+				android:layout_marginTop="20dp"
+				android:textSize="18sp"
+				android:textColor="#00FFFF"/>
+
+			<TextView
+				android:layout_height="wrap_content"
+				android:text="Kimwel Lourence Beller"
+				android:layout_width="wrap_content"
+				android:textSize="18sp"/>
+
+			<TextView
+				android:layout_height="wrap_content"
+				android:text="Kyle David Bonaobra"
+				android:layout_width="wrap_content"
+				android:textSize="18sp"/>
+
+			<TextView
+				android:layout_height="wrap_content"
+				android:text="Ron Car Dilao"
+				android:layout_width="wrap_content"
+				android:textSize="18sp"/>
+
+			<TextView
+				android:layout_height="wrap_content"
+				android:text="Sound/Music"
+				android:layout_width="wrap_content"
+				android:layout_marginTop="20dp"
+				android:textColor="#00FFFF"
+				android:textSize="18sp"/>
+
+			<TextView
+				android:layout_height="wrap_content"
+				android:text="Justine John Movido"
+				android:layout_width="wrap_content"
+				android:textSize="18sp"/>
+
+			<TextView
+				android:layout_height="wrap_content"
+				android:text="Beta Tester"
+				android:layout_width="wrap_content"
+				android:textSize="18sp"
+				android:textColor="#00FFFF"
+				android:layout_marginTop="20dp"/>
+
+			<TextView
+				android:layout_height="wrap_content"
+				android:text="Ron Car Dilao"
+				android:layout_width="wrap_content"
+				android:textSize="18sp"/>
+
+			<TextView
+				android:layout_height="wrap_content"
+				android:text="Justine John Movido"
+				android:layout_width="wrap_content"
+				android:textSize="18sp"/>
+
+			<TextView
+				android:layout_height="wrap_content"
+				android:text="Marc Rodrigo Iraola"
+				android:layout_width="wrap_content"
+				android:textSize="18sp"/>
+
+			<TextView
+				android:layout_height="wrap_content"
+				android:text="Charles Canlas"
+				android:layout_width="wrap_content"
+				android:textSize="18sp"/>
+
+			<TextView
+				android:layout_height="wrap_content"
+				android:text="Q/A Reference:"
+				android:layout_width="wrap_content"
+				android:layout_marginTop="20dp"
+				android:textSize="18sp"
+				android:textColor="#00FFFF"/>
+
+			<TextView
+				android:layout_height="wrap_content"
+				android:text="Science Bowl"
+				android:layout_width="wrap_content"
+				android:textSize="18sp"/>
+
+			<TextView
+				android:layout_height="wrap_content"
+				android:text="Created by Crimson Knight Blood"
+				android:layout_width="wrap_content"
+				android:layout_marginTop="100dp"
+				android:textSize="18sp"/>
+
+			<LinearLayout
+				android:layout_height="wrap_content"
+				android:layout_width="match_parent"
+				android:orientation="horizontal"
+				android:layout_marginTop="40dp"
+				android:gravity="center"
+				android:layout_marginBottom="100dp">
+
+				<ImageView
+					android:layout_height="30dp"
+					android:layout_width="30dp"
+					android:src="@drawable/app_icon"/>
+
+				<TextView
+					android:layout_height="wrap_content"
+					android:text="SciQuiz v1.0"
+					android:layout_width="wrap_content"
+					android:layout_marginStart="10dp"
+					android:textSize="18sp"/>
+
+			</LinearLayout>
+
+		</LinearLayout>
+
+	</ScrollView>
+
+</LinearLayout>
+

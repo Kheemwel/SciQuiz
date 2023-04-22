@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<menu
+	xmlns:android="http://schemas.android.com/apk/res/android"> 
+
+	<item 
+		android:id="@+id/status_nav" 
+		android:icon="@drawable/user" 
+		android:title="Status"/> 
+	
+    <item 
+		android:id="@+id/exit_nav" 
+		android:icon="@drawable/exit" 
+		android:title="Exit"/>
+	
+	<item
+		android:id="@+id/options_nav"
+		android:icon="@drawable/settings"
+		android:title="Options"/>
+
+</menu> 

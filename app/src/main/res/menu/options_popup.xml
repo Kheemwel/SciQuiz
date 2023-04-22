@@ -1,0 +1,12 @@
+<menu 
+	xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <item
+        android:id="@+id/settings_popup"
+        android:title="Settings"/>
+	
+	<item
+		android:id="@+id/profile_popup"
+		android:title="Profile"/>
+    
+</menu>

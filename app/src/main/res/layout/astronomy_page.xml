@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical"
+	android:gravity="top|center">
+
+	<ImageView
+		android:layout_height="300dp"
+		android:layout_width="300dp"
+		android:layout_centerInParent="true"
+		android:id="@+id/astronomypageImageView1"
+		android:background="@drawable/astronomy"/>
+
+	<TextView
+		android:layout_height="wrap_content"
+		android:text="Astronomy"
+		android:layout_width="match_parent"
+		android:textSize="25sp"
+		android:typeface="serif"
+		android:gravity="center"
+		android:id="@+id/astronomypageTextView1"/>
+
+	<LinearLayout
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
+		android:orientation="horizontal"/>
+
+</LinearLayout>
+
