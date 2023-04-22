@@ -3,8 +3,8 @@
 \
 \
 \
-Founder: David Bonaobra \
-Programmer: Kimwel Lourence C. Beller \
+Creator:  \
+  Kimwel Lourence C. Beller \
 Members:  \
 \
 \
