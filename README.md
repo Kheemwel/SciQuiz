@@ -3,9 +3,11 @@
 \
 \
 \
-Creator:  \
-&emsp;  Kimwel Lourence C. Beller \
-Members:  \
+Creator: Kimwel Lourence C. Beller \
+Arts/Design: Kyle David Bonaobra, Ron Car Dilao \
+Sound/Music: Justine John Movido  \
+Beta Tester: Marc Rodrigo Iraola, Charles Canlas  \
+Q/A Reference: Science Bowl \
 \
 \
 \
