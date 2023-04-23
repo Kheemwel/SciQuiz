@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,13 +17,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-import com.CrimsonKnightBlood.SciQuiz.Section.*;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import org.jetbrains.annotations.NotNull;
 
 public class SectionPageActivity extends AppCompatActivity {
-    Intent i;
     MediaPlayer rightMP, leftMP;
     SharedPreferences sp;
 
@@ -89,63 +85,22 @@ public class SectionPageActivity extends AppCompatActivity {
 
 
         bnv.setOnItemSelectedListener(item -> {
-            switch (item.getItemId()) {
-
-                case R.id.status_nav:
-                    Intent i = new Intent(SectionPageActivity.this, StatusPageActivity.class);
-                    startActivity(i);
-                    break;
-
-                case R.id.exit_nav:
-                    EXIT();
-                    break;
-
-                case R.id.options_nav:
-                    i = new Intent(SectionPageActivity.this, OptionsPageActivity.class);
-                    startActivity(i);
-                    break;
+            int itemId = item.getItemId();
+            if (itemId == R.id.status_nav) {
+                Intent i = new Intent(SectionPageActivity.this, StatusPageActivity.class);
+                startActivity(i);
+            } else if (itemId == R.id.exit_nav) {
+                EXIT();
+            } else if (itemId == R.id.options_nav) {
+                Intent i = new Intent(SectionPageActivity.this, OptionsPageActivity.class);
+                startActivity(i);
             }
             return true;
         });
     }
+    public static class PageAdapter extends PagerAdapter {
 
-//    private class PageAdapter extends PagerAdapter {
-//        @Override
-//        public int getCount() {
-//            return 5;
-//        }
-//
-//        @Override
-//        @NotNull
-//        public Object instantiateItem(View container, int position) {
-//            // TODO: Implement this method
-//            View view = getLayoutInflater().inflate(pages[position], null);
-//            ((ViewPager) container).addView(view, 0);
-//            return view;
-//        }
-//
-//        @Override
-//        public void destroyItem(View arg0, int arg1, Object arg2) {
-//            // TODO: Implement this method
-//            ((ViewPager) arg0).removeView((View) arg2);
-//        }
-//
-//        @Override
-//        public boolean isViewFromObject(View arg0, Object arg1) {
-//            // TODO: Implement this method
-//            return arg0 == arg1;
-//        }
-//
-//        @Override
-//        public Parcelable saveState() {
-//            // TODO: Implement this method
-//            return null;
-//        }
-//    }
-
-    public class PageAdapter extends PagerAdapter {
-
-        private int[] pages;
+        private final int[] pages;
 
         public PageAdapter(int[] pages) {
             this.pages = pages;
@@ -211,31 +166,28 @@ public class SectionPageActivity extends AppCompatActivity {
 
     public void StartQuiz(View v) {
         int page = vp.getCurrentItem();
+        Intent intent = new Intent(this, QuizSectionActivity.class);
+        String cls = "";
 
         switch (page) {
             case 0:
-                i = new Intent(this, BiologySection.class);
-                startActivity(i);
+                cls = "BiologySection";
                 break;
-
             case 1:
-                i = new Intent(this, EarthScienceSection.class);
-                startActivity(i);
+                cls = "EarthScienceSection";
                 break;
             case 2:
-                i = new Intent(this, AstronomySection.class);
-                startActivity(i);
+                cls = "AstronomySection";
                 break;
             case 3:
-                i = new Intent(this, ChemistrySection.class);
-                startActivity(i);
+                cls = "ChemistrySection";
                 break;
             case 4:
-                i = new Intent(this, PhysicsSection.class);
-                startActivity(i);
+                cls = "PhysicsSection";
                 break;
         }
-
+        intent.putExtra("targetClass", cls);
+        startActivity(intent);
     }
 
     public void SwishLeft() {
@@ -303,13 +255,11 @@ public class SectionPageActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        // TODO: Implement this method
         EXIT();
     }
 
     @Override
     protected void onResume() {
-        // TODO: Implement this method
         super.onResume();
         activated = sp.getBoolean("activate_sound", true);
         color = sp.getInt("color_scheme", 0);

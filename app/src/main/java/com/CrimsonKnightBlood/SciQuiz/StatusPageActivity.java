@@ -5,15 +5,17 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import com.CrimsonKnightBlood.SciQuiz.Quiz.MCQuestions;
 import com.CrimsonKnightBlood.SciQuiz.Quiz.TFQuestions;
 
 import java.text.DecimalFormat;
+import java.util.Objects;
+
 public class StatusPageActivity extends AppCompatActivity
 {
 	MCQuestions mc = new MCQuestions();
@@ -48,28 +50,22 @@ public class StatusPageActivity extends AppCompatActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.statuspage);
 
-		Tb = (Toolbar) findViewById(R.id.toolbar);
+		Tb = findViewById(R.id.toolbar);
 		setSupportActionBar(Tb);
 
-		getSupportActionBar().setDisplayShowTitleEnabled(false);
+		Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setDisplayShowHomeEnabled(true);
 		
-		Tb.setNavigationOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v)
-				{
-					finish();
-				}
-			});
+		Tb.setNavigationOnClickListener(v -> finish());
 
-		txt1 = (TextView) findViewById(R.id.astronomy_average);
-		txt2 = (TextView) findViewById(R.id.biology_average);
-		txt3 = (TextView) findViewById(R.id.chemistry_average);
-		txt4 = (TextView) findViewById(R.id.earthscience_average);
-		txt5 = (TextView) findViewById(R.id.physics_average);
+		txt1 = findViewById(R.id.astronomy_average);
+		txt2 = findViewById(R.id.biology_average);
+		txt3 = findViewById(R.id.chemistry_average);
+		txt4 = findViewById(R.id.earthscience_average);
+		txt5 = findViewById(R.id.physics_average);
 
-		ed = (EditText) findViewById(R.id.username_edittext);
+		ed = findViewById(R.id.username_edittext);
 
 		sp = getSharedPreferences("com.CrimsonKnightBlood.SciQuiz.sharedpreferences", Context.MODE_PRIVATE);
 		ap = getSharedPreferences("app_preferences", Context.MODE_PRIVATE);
@@ -106,16 +102,16 @@ public class StatusPageActivity extends AppCompatActivity
 			});
 
 	}
-	
+
 	public void ColorChange(int clr) {
-		if(clr == 0) {
-			Tb.setBackgroundColor(getResources().getColor(R.color.lightblue_500));
-		} else if(clr == 1) {
-			Tb.setBackgroundColor(getResources().getColor(R.color.lightgreen_500));
-		} else if(clr == 2) {
-			Tb.setBackgroundColor(getResources().getColor(R.color.pink_500));
-		} else if(clr == 3) {
-			Tb.setBackgroundColor(getResources().getColor(R.color.amber_500));
+		if (clr == 0) {
+			Tb.setBackgroundColor(ContextCompat.getColor(this, R.color.lightblue_500));
+		} else if (clr == 1) {
+			Tb.setBackgroundColor(ContextCompat.getColor(this, R.color.lightgreen_500));
+		} else if (clr == 2) {
+			Tb.setBackgroundColor(ContextCompat.getColor(this, R.color.pink_500));
+		} else if (clr == 3) {
+			Tb.setBackgroundColor(ContextCompat.getColor(this, R.color.amber_500));
 		}
 	}
 
@@ -199,11 +195,6 @@ public class StatusPageActivity extends AppCompatActivity
 		} else {
 			txt5.setTextColor(0xffff0000);
 		}
-	}
-
-	public void ArrowBack(View v)
-	{
-		finish();
 	}
 
 }

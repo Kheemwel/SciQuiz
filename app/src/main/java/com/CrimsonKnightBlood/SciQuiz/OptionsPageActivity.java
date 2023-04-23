@@ -8,12 +8,15 @@ import android.view.View;
 
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
+
+import java.util.Objects;
 
 public class OptionsPageActivity extends AppCompatActivity
 {
 	private Toolbar Tb;
-	Switch sw;
+	SwitchCompat sw;
 	ImageView img;
 	RadioGroup colorscheme;
 	RadioButton bluehue, greenhue, purplehue, orangehue;
@@ -33,13 +36,13 @@ public class OptionsPageActivity extends AppCompatActivity
 		sp = getSharedPreferences("app_preferences", Context.MODE_PRIVATE);
 		editor = sp.edit();
 		
-		img = (ImageView) findViewById(R.id.sound_image);
-		sw = (Switch) findViewById(R.id.sound_option);
-		colorscheme = (RadioGroup) findViewById(R.id.radiogroup1);
-		bluehue = (RadioButton) findViewById(R.id.radiobutton1);
-		greenhue = (RadioButton) findViewById(R.id.radiobutton2);
-		purplehue = (RadioButton) findViewById(R.id.radiobutton3);
-		orangehue = (RadioButton) findViewById(R.id.radiobutton4);
+		img = findViewById(R.id.sound_image);
+		sw = findViewById(R.id.sound_option);
+		colorscheme = findViewById(R.id.radiogroup1);
+		bluehue = findViewById(R.id.radiobutton1);
+		greenhue = findViewById(R.id.radiobutton2);
+		purplehue = findViewById(R.id.radiobutton3);
+		orangehue = findViewById(R.id.radiobutton4);
 		
 		sw.setChecked(sp.getBoolean("activate_sound", true));
 		if(sw.isChecked()) {
@@ -51,15 +54,10 @@ public class OptionsPageActivity extends AppCompatActivity
 		Tb = findViewById(R.id.toolbar);
 		setSupportActionBar(Tb);
 		
-		getSupportActionBar().setDisplayShowTitleEnabled(false);
+		Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
 		Tb.setNavigationIcon(R.drawable.abc_ic_ab_back_material);
 
-        Tb.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        Tb.setNavigationOnClickListener(v -> finish());
 		
 		color = sp.getInt("color_scheme", 0);
 		if(color == 0) {
@@ -73,36 +71,25 @@ public class OptionsPageActivity extends AppCompatActivity
 		}
 		
 		ColorChange(color);
-		
-		colorscheme.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-			@Override
-			public void onCheckedChanged(RadioGroup rg, int id) {
-				switch(id) {
-					case R.id.radiobutton1:
-						scheme = 0;
-						ColorScheme(scheme);
-						ColorChange(scheme);
-						break;
-					
-					case R.id.radiobutton2:
-						scheme = 1;
-						ColorScheme(scheme);
-						ColorChange(scheme);
-						break;
-						
-					case R.id.radiobutton3:
-						scheme = 2;
-						ColorScheme(scheme);
-						ColorChange(scheme);
-						break;
-						
-					case R.id.radiobutton4:
-						scheme = 3;
-						ColorScheme(scheme);
-						ColorChange(scheme);
-						break;
-				}
-			} 
+
+		colorscheme.setOnCheckedChangeListener((rg, id) -> {
+			if(id == R.id.radiobutton1) {
+				scheme = 0;
+				ColorScheme(scheme);
+				ColorChange(scheme);
+			} else if(id == R.id.radiobutton2) {
+				scheme = 1;
+				ColorScheme(scheme);
+				ColorChange(scheme);
+			} else if(id == R.id.radiobutton3) {
+				scheme = 2;
+				ColorScheme(scheme);
+				ColorChange(scheme);
+			} else if(id == R.id.radiobutton4) {
+				scheme = 3;
+				ColorScheme(scheme);
+				ColorChange(scheme);
+			}
 		});
 	}
 	
@@ -137,11 +124,6 @@ public class OptionsPageActivity extends AppCompatActivity
 	public void SoundOption(View v) {
 		OptionSave();
 	}
-	
-	public void ArrowBack(View v) {
-		finish();
-	}
-
 	@Override
 	protected void onPause()
 	{
