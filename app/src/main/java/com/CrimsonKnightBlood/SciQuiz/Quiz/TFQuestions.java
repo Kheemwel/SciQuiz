@@ -1,5 +1,4 @@
 package com.CrimsonKnightBlood.SciQuiz.Quiz;
-import com.CrimsonKnightBlood.SciQuiz.Section.*;
 
 public class TFQuestions
 {

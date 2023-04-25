@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.content.Intent;
+import android.os.Looper;
 
 public class TitleActivity extends Activity 
 {
@@ -12,12 +13,9 @@ public class TitleActivity extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.title);
 
-		new Handler().postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				Intent transition = new Intent(TitleActivity.this, SectionPageActivity.class);
-				startActivity(transition);
-			}
+		new Handler(Looper.getMainLooper()).postDelayed(() -> {
+			Intent transition = new Intent(TitleActivity.this, SectionPageActivity.class);
+			startActivity(transition);
 		}, 3000);
     }
 }
