@@ -223,8 +223,8 @@ public class TFQuiz  extends Activity {
     }
 
     private void SAVE() {
-        if(score > sharedPreferences.getInt("astro_tfscore", 0)) {
-            editor.putInt("astro_tfscore", score);
+        if(score > sharedPreferences.getInt(cls.toLowerCase() + "_tfscore", 0)) {
+            editor.putInt(cls.toLowerCase() + "_tfscore", score);
             editor.apply();
         }
     }
@@ -248,8 +248,6 @@ public class TFQuiz  extends Activity {
                 .setTitle("Congratulations!!!")
                 .setMessage("Your Score is " + score + " points")
                 .setPositiveButton("Retry", (di, i) -> {
-//                    startActivity(new Intent(getApplicationContext(), AstronomyTF.class));
-//                    finish();
                     recreate();
                 })
                 .setNegativeButton("Quit", (di, i) -> finish())

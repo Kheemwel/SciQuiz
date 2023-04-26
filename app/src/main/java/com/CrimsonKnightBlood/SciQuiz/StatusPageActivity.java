@@ -14,7 +14,7 @@ import androidx.core.content.ContextCompat;
 import com.CrimsonKnightBlood.SciQuiz.Quiz.MCQuestions;
 
 import java.text.DecimalFormat;
-import java.util.Objects;
+import java.util.*;
 
 public class StatusPageActivity extends AppCompatActivity {
 
@@ -27,11 +27,10 @@ public class StatusPageActivity extends AppCompatActivity {
 
 	private String username, name;
 	float astroAverage, bioAverage, chemistAverage, earthAverage, physAverage;
-	float astroHighScore, bioHighScore, chemistHighScore, earthHighScore, physHighScore;
-	float astroPoints, bioPoints, chemistPoints, earthPoints, physPoints;
 	int astroTotal, bioTotal, chemistTotal, earthTotal, physTotal;
 	int color;
 	private final DecimalFormat decimalFormat = new DecimalFormat("0.##");
+	public final String[] SUBJECTS = {"astronomy", "biology", "chemistry", "earthscience", "physics"};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -94,7 +93,6 @@ public class StatusPageActivity extends AppCompatActivity {
 		chemistTotal = mc.ChemistryQuestion.length + getQuestionsLength(R.raw.tf_chemistry, 1);
 		earthTotal = mc.EarthScienceQuestion.length + getQuestionsLength(R.raw.tf_earthscience, 1);
 		physTotal = mc.PhysicsQuestion.length + getQuestionsLength(R.raw.tf_physics, 1);
-
 		Compute();
 		Text();
 	}
@@ -118,83 +116,46 @@ public class StatusPageActivity extends AppCompatActivity {
 
 	public void Compute()
 	{
-		astroPoints = sharedPreferences.getInt("astro_mcscore", 0) + sharedPreferences.getInt("astro_tfscore", 0);
-		bioPoints = sharedPreferences.getInt("bio_mcscore", 0) + sharedPreferences.getInt("bio_tfscore", 0);
-		chemistPoints = sharedPreferences.getInt("chemist_mcscore", 0) + sharedPreferences.getInt("chemist_tfscore", 0);
-		earthPoints = sharedPreferences.getInt("earth_mcscore", 0) + sharedPreferences.getInt("earth_tfscore", 0);
-		physPoints = sharedPreferences.getInt("phys_mcscore", 0) + sharedPreferences.getInt("phystfscore", 0);
+		Map<String, Integer> mcScores = new HashMap<>();
+		Map<String, Integer> tfScores = new HashMap<>();
+		Map<String, Integer> points = new HashMap<>();
+		Map<String, Float> averages = new HashMap<>();
+		ArrayList<String> subjectList = new ArrayList<>(Arrays.asList(SUBJECTS));
+		int[] totals = {astroTotal, bioTotal, chemistTotal, earthTotal, physTotal};
 
-		astroAverage = astroPoints / astroTotal;
-		bioAverage = bioPoints / bioTotal;
-		chemistAverage = chemistPoints / chemistTotal;
-		earthAverage = earthPoints / earthTotal;
-		physAverage = physPoints / physTotal;
+		for (String s : subjectList) {
+			mcScores.put(s, sharedPreferences.getInt(s + "_mcscore", 0));
+			tfScores.put(s, sharedPreferences.getInt(s + "_tfscore", 0));
+			points.put(s, (mcScores.get(s) + tfScores.get(s)));
+			averages.put(s, ((float) points.get(s) / totals[subjectList.indexOf(s)]) * 100);
+			editor.putFloat(s + "_avg", averages.get(s));
+		}
+		editor.apply();
 
-		astroAverage *= 100;
-		bioAverage *= 100;
-		chemistAverage *= 100;
-		earthAverage *= 100;
-		physAverage *= 100;
-
-		editor.putFloat("astro_avg", astroAverage);
-		editor.putFloat("bio_avg", bioAverage);
-		editor.putFloat("chemist_avg", chemistAverage);
-		editor.putFloat("earth_avg", earthAverage);
-		editor.putFloat("phs_avg", physAverage);
-		editor.commit();
-
-		astroHighScore = sharedPreferences.getFloat("astro_avg", 0) * astroTotal;
-		bioHighScore = sharedPreferences.getFloat("bio_avg", 0) * bioTotal;
-		chemistHighScore = sharedPreferences.getFloat("chemist_avg", 0) * chemistTotal;
-		earthHighScore = sharedPreferences.getFloat("earth_avg", 0) * earthTotal;
-		physHighScore = sharedPreferences.getFloat("phys_avg", 0) * physTotal;
+		astroAverage = sharedPreferences.getFloat("astronomy_avg", 0);
+		bioAverage = sharedPreferences.getFloat("biology_avg", 0);
+		chemistAverage = sharedPreferences.getFloat("chemistry_avg", 0);
+		earthAverage = sharedPreferences.getFloat("earthscience_avg", 0);
+		physAverage = sharedPreferences.getFloat("physics_avg", 0);
 	}
 
 	public void Text()
 	{
-		txt1.setText(decimalFormat.format(astroAverage));
-		if (astroAverage >= 90) {
-			txt1.setTextColor(Color.GREEN);
-		} else if (astroAverage >= 80 && astroAverage <= 89) {
-			txt1.setTextColor(Color.YELLOW);
-		} else {
-			txt1.setTextColor(Color.RED);
-		}
+		setTextAndColor(txt1, astroAverage);
+		setTextAndColor(txt2, bioAverage);
+		setTextAndColor(txt3, chemistAverage);
+		setTextAndColor(txt4, earthAverage);
+		setTextAndColor(txt5, physAverage);
+	}
 
-		txt2.setText(decimalFormat.format(bioAverage));
-		if (bioAverage >= 90) {
-			txt2.setTextColor(Color.GREEN);
-		} else if (bioAverage >= 80 && bioAverage <= 89) {
-			txt2.setTextColor(Color.YELLOW);
-		} else {
-			txt2.setTextColor(Color.RED);
+	private void setTextAndColor(TextView textView, double average) {
+		textView.setText(decimalFormat.format(average));
+		int textColor = Color.RED;
+		if (average >= 90) {
+			textColor = Color.GREEN;
+		} else if (average >= 80 && average <= 89) {
+			textColor = Color.YELLOW;
 		}
-
-		txt3.setText(decimalFormat.format(chemistAverage));
-		if (chemistAverage >= 90) {
-			txt3.setTextColor(Color.GREEN);
-		} else if (chemistAverage >= 80 && chemistAverage <= 89) {
-			txt3.setTextColor(Color.YELLOW);
-		} else {
-			txt3.setTextColor(Color.RED);
-		}
-
-		txt4.setText(decimalFormat.format(earthAverage));
-		if (earthAverage >= 90) {
-			txt4.setTextColor(Color.GREEN);
-		} else if (earthAverage >= 80 && earthAverage <= 89) {
-			txt4.setTextColor(Color.YELLOW);
-		} else {
-			txt4.setTextColor(Color.RED);
-		}
-
-		txt5.setText(decimalFormat.format(physAverage));
-		if (physAverage >= 90) {
-			txt5.setTextColor(Color.GREEN);
-		} else if (physAverage >= 80 && physAverage <= 89) {
-			txt5.setTextColor(Color.YELLOW);
-		} else {
-			txt5.setTextColor(Color.RED);
-		}
+		textView.setTextColor(textColor);
 	}
 }
