@@ -3,7 +3,28 @@ package com.CrimsonKnightBlood.SciQuiz.Quiz;
 public class TFAnswers
 {
 
-	public boolean AstronomyAnswer[] = {false, true, false, true, false, false, true, false, true, false, true, false, true, false, true, true, false, false, true, true};
+	public boolean[] AstronomyAnswer = {
+			false,
+			true,
+			false,
+			true,
+			false,
+			false,
+			true,
+			false,
+			true,
+			false,
+			true,
+			false,
+			true,
+			false,
+			true,
+			true,
+			false,
+			false,
+			true,
+			true,
+	};
 
 	public boolean BiologyAnswer[] = {true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, true};
 

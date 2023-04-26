@@ -171,19 +171,19 @@ public class SectionPageActivity extends AppCompatActivity {
 
         switch (page) {
             case 0:
-                cls = "BiologySection";
+                cls = "Biology";
                 break;
             case 1:
-                cls = "EarthScienceSection";
+                cls = "EarthScience";
                 break;
             case 2:
-                cls = "AstronomySection";
+                cls = "Astronomy";
                 break;
             case 3:
-                cls = "ChemistrySection";
+                cls = "Chemistry";
                 break;
             case 4:
-                cls = "PhysicsSection";
+                cls = "Physics";
                 break;
         }
         intent.putExtra("targetClass", cls);

@@ -13,7 +13,7 @@ public class TitleActivity extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.title);
 
-		new Handler(Looper.getMainLooper()).postDelayed(() -> {
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
 			Intent transition = new Intent(TitleActivity.this, SectionPageActivity.class);
 			startActivity(transition);
 		}, 3000);

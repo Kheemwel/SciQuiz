@@ -8,7 +8,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.*;
 
-public class QAParser {
+public class QACsvParser {
     private final Context context;
     private final int resource;
     private final String splitter;
@@ -17,7 +17,7 @@ public class QAParser {
     private final Map<String, List<String>> choices;
     private final Map<String, String> answers;
 
-    public QAParser(Context context, int resource, String splitter, int answerIndex) {
+    public QACsvParser(Context context, int resource, String splitter, int answerIndex) {
         this.context = context;
         this.resource = resource;
         this.splitter = splitter;
