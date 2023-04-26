@@ -5,8 +5,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import com.CrimsonKnightBlood.SciQuiz.R;
-import com.CrimsonKnightBlood.SciQuiz.Topic.*;
 
 public class QuizSectionActivity extends Activity {
     private String cls;

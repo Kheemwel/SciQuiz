@@ -3,6 +3,7 @@ package com.CrimsonKnightBlood.SciQuiz;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -12,12 +13,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import com.CrimsonKnightBlood.SciQuiz.Quiz.MCAnswers;
-import com.CrimsonKnightBlood.SciQuiz.Quiz.MCAstronomyChoices;
-import com.CrimsonKnightBlood.SciQuiz.Quiz.MCQuestions;
 
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.*;
 
 public class MCQuiz extends Activity {
     SharedPreferences sharedPreferences, appPreferences;
@@ -26,24 +23,21 @@ public class MCQuiz extends Activity {
     LinearLayout llTitle, llItem;
     Button btn1, btn2, btn3, btn4;
     TextView txtTitle, txtScore, txtItem, txtQuestion;
-
-    private final MCQuestions Q = new MCQuestions();
-    private final MCAstronomyChoices C = new MCAstronomyChoices();
-    private final MCAnswers A = new MCAnswers();
-    private final int questionLength = Q.AstronomyQuestion.length;
-    private final int numQuestions = questionLength + 1;
+    
+    private int questionLength;
     private int score = 0;
     private int numItems = 1;
-    private int random = 0;
     private int index;
     boolean activated;
     int color;
     private String answer;
-    int[] arr = new int[questionLength];
+    private String cls = "";
+    private List<String> questions;
+    private Map<String, String> answers;
+    private Map<String, List<String>> choices;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // TODO: Implement this method
         super.onCreate(savedInstanceState);
         setContentView(R.layout.multiplechoice_quiz);
 
@@ -90,74 +84,72 @@ public class MCQuiz extends Activity {
         btn3.setOnClickListener(v -> handleButtonClick(btn3));
         btn4.setOnClickListener(v -> handleButtonClick(btn4));
 
-        txtTitle.setText("Astronomy");
-        txtScore.setText(score);
-        txtItem.setText(numItems + "/" + questionLength);
+        Intent intent = getIntent();
+        cls = intent.getStringExtra("targetClass");
 
-        for(int i = 0; i < questionLength; i++) {
-            arr[i] = i;
+        int resource = 0;
+
+        switch (cls) {
+            case "Biology":
+                resource = R.raw.mc_biology;
+                break;
+            case "EarthScience":
+                resource = R.raw.mc_earthscience;
+                break;
+            case "Astronomy":
+                resource = R.raw.mc_astronomy;
+                break;
+            case "Chemistry":
+                resource = R.raw.mc_chemistry;
+                break;
+            case "Physics":
+                resource = R.raw.mc_physics;
+                break;
         }
 
-        Collections.shuffle(Arrays.asList(arr));
+        QACsvParser csv = new QACsvParser(getApplicationContext(), resource, ";",5);
+        questions = new ArrayList<>(csv.getQuestions());
+        answers = new HashMap<>(csv.getAnswers());
+        choices = new HashMap<>(csv.getChoices());
+        questionLength = questions.size();
 
-        Index(arr[random]);
+        Collections.shuffle(questions);
+
+        txtTitle.setText(cls);
+        txtScore.setText(String.valueOf(score));
+        txtItem.setText(numItems + "/" + questionLength);
         UpdateQuestion(index);
     }
 
     private void handleButtonClick(Button button) {
-        if (numItems != questionLength) {
-            int timeout = 1000;
-            if (button.getText() == answer) {
-                CorrectSound();
-                button.setBackgroundResource(R.drawable.correct_greenbutton);
-                score++;
-                txtScore.setText(score);
-                numItems++;
-                new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                    if (numItems < numQuestions) {
-                        txtItem.setText(numItems + "/" + questionLength);
-                        random++;
-                        Index(arr[random]);
-                        UpdateQuestion(index);
-                    }
-                }, timeout);
-            } else {
-                WrongSound();
-                button.setBackgroundResource(R.drawable.wrong_redbutton);
-                for (Button btn : Arrays.asList(btn1, btn2, btn3, btn4)) {
-                    if (btn.getText() == answer) {
-                        btn.setBackgroundResource(R.drawable.correct_greenbutton);
-                    }
-                }
-                numItems++;
-                new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                    if (numItems < numQuestions) {
-                        txtItem.setText(numItems + "/" + questionLength);
-                        random++;
-                        Index(arr[random]);
-                        UpdateQuestion(index);
-                    }
-                }, timeout);
-            }
-            btn1.setEnabled(false);
-            btn2.setEnabled(false);
-            btn3.setEnabled(false);
-            btn4.setEnabled(false);
+        if (button.getText().toString().equalsIgnoreCase(answer)) {
+            CorrectSound();
+            score++;
         } else {
-            if (button.getText() == answer) {
-                CorrectSound();
-                button.setBackgroundResource(R.drawable.correct_greenbutton);
-                score++;
-                txtScore.setText(score);
+            WrongSound();
+        }
+
+        for (Button b : Arrays.asList(btn1, btn2, btn3, btn4)) {
+            if (b.getText().toString().equalsIgnoreCase(answer)) {
+                b.setBackgroundResource(R.drawable.correct_greenbutton);
             } else {
-                WrongSound();
-                button.setBackgroundResource(R.drawable.wrong_redbutton);
-                for (Button btn : Arrays.asList(btn1, btn2, btn3, btn4)) {
-                    if (btn.getText() == answer) {
-                        btn.setBackgroundResource(R.drawable.correct_greenbutton);
-                    }
-                }
+                b.setBackgroundResource(R.drawable.wrong_redbutton);
             }
+            b.setEnabled(false);
+        }
+
+        txtScore.setText(String.valueOf(score));
+
+        if (numItems != questionLength) {
+            numItems++;
+
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                txtItem.setText(numItems + "/" + questionLength);
+                index++;
+                UpdateQuestion(index);
+            }, 1000);
+
+        } else {
             SAVE();
             END();
         }
@@ -226,49 +218,39 @@ public class MCQuiz extends Activity {
     }
 
     private void SAVE() {
-        if (score > sharedPreferences.getInt("astro_mcscore", 0)) {
-            editor.putInt("astro_mcscore", score);
-            editor.commit();
+        if(score > sharedPreferences.getInt(cls.toLowerCase() + "_mcscore", 0)) {
+            editor.putInt(cls.toLowerCase() + "_mcscore", score);
+            editor.apply();
         }
     }
 
-    private void Index(int indx) {
-        index = indx;
-    }
-
     private void UpdateQuestion(int num) {
-        txtQuestion.setText(Q.getAstronomyQuestion(num));
-        btn1.setText(C.getChoice1(num));
-        btn2.setText(C.getChoice2(num));
-        btn3.setText(C.getChoice3(num));
-        btn4.setText(C.getChoice4(num));
-        answer = A.getAstronomyAnswer(num);
+        txtQuestion.setText(questions.get(num));
+        List<String> choicesList = new ArrayList<>(choices.get(questions.get(num)));
+        Collections.shuffle(choicesList);
 
-        btn1.setBackgroundResource(R.drawable.button_style);
-        btn2.setBackgroundResource(R.drawable.button_style);
-        btn3.setBackgroundResource(R.drawable.button_style);
-        btn4.setBackgroundResource(R.drawable.button_style);
+        List<Button> buttonList = Arrays.asList(btn1, btn2, btn3, btn4);
+        for (Button b : buttonList) {
+            b.setText(choicesList.get(buttonList.indexOf(b)));
+            b.setBackgroundResource(R.drawable.button_style);
+            b.setEnabled(true);
+        }
 
-        btn1.setEnabled(true);
-        btn2.setEnabled(true);
-        btn3.setEnabled(true);
-        btn4.setEnabled(true);
+        answer = answers.get(questions.get(num));
     }
 
     private void END() {
+        EndSound();
         AlertDialog.Builder build = new AlertDialog.Builder(this);
         build
                 .setCancelable(false)
                 .setTitle("Congratulations!!!")
                 .setMessage("Your Score is " + score + " points")
                 .setPositiveButton("Retry", (di, i) -> {
-//                    startActivity(new Intent(getApplicationContext(), AstronomyMC.class));
-//                    finish();
                     recreate();
                 })
                 .setNegativeButton("Quit", (di, i) -> finish())
                 .create().show();
-        EndSound();
     }
 
     private void EXIT() {
@@ -287,14 +269,11 @@ public class MCQuiz extends Activity {
 
     @Override
     public void onBackPressed() {
-        // TODO: Implement this method
         EXIT();
     }
 
     @Override
-    protected void onPause()
-    {
-        // TODO: Implement this method
+    protected void onPause() {
         super.onPause();
         SAVE();
     }

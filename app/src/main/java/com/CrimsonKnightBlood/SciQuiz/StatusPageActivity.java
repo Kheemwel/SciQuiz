@@ -11,7 +11,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
-import com.CrimsonKnightBlood.SciQuiz.Quiz.MCQuestions;
 
 import java.text.DecimalFormat;
 import java.util.*;
@@ -87,12 +86,11 @@ public class StatusPageActivity extends AppCompatActivity {
 				}
 			});
 
-		MCQuestions mc = new MCQuestions();
-		astroTotal = mc.AstronomyQuestion.length + getQuestionsLength(R.raw.tf_astronomy, 1);
-		bioTotal = mc.BiologyQuestion.length + getQuestionsLength(R.raw.tf_biology, 1);
-		chemistTotal = mc.ChemistryQuestion.length + getQuestionsLength(R.raw.tf_chemistry, 1);
-		earthTotal = mc.EarthScienceQuestion.length + getQuestionsLength(R.raw.tf_earthscience, 1);
-		physTotal = mc.PhysicsQuestion.length + getQuestionsLength(R.raw.tf_physics, 1);
+		astroTotal = getQuestionsLength(R.raw.mc_astronomy, 5) + getQuestionsLength(R.raw.tf_astronomy, 1);
+		bioTotal = getQuestionsLength(R.raw.mc_astronomy, 5) + getQuestionsLength(R.raw.tf_biology, 1);
+		chemistTotal = getQuestionsLength(R.raw.mc_astronomy, 5) + getQuestionsLength(R.raw.tf_chemistry, 1);
+		earthTotal = getQuestionsLength(R.raw.mc_astronomy, 5) + getQuestionsLength(R.raw.tf_earthscience, 1);
+		physTotal = getQuestionsLength(R.raw.mc_astronomy, 5) + getQuestionsLength(R.raw.tf_physics, 1);
 		Compute();
 		Text();
 	}

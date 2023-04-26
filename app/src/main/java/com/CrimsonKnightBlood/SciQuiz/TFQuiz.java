@@ -29,7 +29,6 @@ public class TFQuiz  extends Activity {
     private int score = 0;
     private int numItems = 1;
     private int index = 0;
-    private final int timeout = 1000;
     private boolean answer;
     boolean activated;
     int color;
@@ -114,7 +113,7 @@ public class TFQuiz  extends Activity {
                     txtItem.setText(numItems + "/" + questionLength);
                     index++;
                     UpdateQuestion(index);
-                }, timeout);
+                }, 1000);
 
             } else {
                 SAVE();
