@@ -1,5 +1,7 @@
 package com.CrimsonKnightBlood.SciQuiz;
 
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -91,6 +93,15 @@ public class OptionsPageActivity extends AppCompatActivity
 				ColorChange(scheme);
 			}
 		});
+
+		try {
+			PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+			String version = pInfo.versionName;
+			TextView versionTextView = findViewById(R.id.txtVersion);
+			versionTextView.setText("SciQuiz v" + version);
+		} catch (PackageManager.NameNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void OptionSave() {
