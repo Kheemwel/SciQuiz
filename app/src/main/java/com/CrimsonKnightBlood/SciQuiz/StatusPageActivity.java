@@ -2,6 +2,7 @@ package com.CrimsonKnightBlood.SciQuiz;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -11,37 +12,26 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import com.CrimsonKnightBlood.SciQuiz.Quiz.MCQuestions;
-import com.CrimsonKnightBlood.SciQuiz.Quiz.TFQuestions;
 
 import java.text.DecimalFormat;
 import java.util.Objects;
 
-public class StatusPageActivity extends AppCompatActivity
-{
-	MCQuestions mc = new MCQuestions();
-	TFQuestions tf = new TFQuestions();
+public class StatusPageActivity extends AppCompatActivity {
 
-	SharedPreferences sp, ap;
-	SharedPreferences.Editor editor;
+	private SharedPreferences sharedPreferences, appPreferences;
+	private SharedPreferences.Editor editor;
 
-	TextView txt1, txt2, txt3, txt4, txt5;
-	EditText ed;
+	private TextView txt1, txt2, txt3, txt4, txt5;
+	private EditText edTxt;
+	private Toolbar toolbar;
 
-	private Toolbar Tb;
-
-	String username, name;
-	float astroAVG, bioAVG, chemistAVG, earthAVG, physAVG;
-	float astroHS, bioHS, chemistHS, earthHS, physHS;
-	float astroPT, bioPT, chemistPT, earthPT, physPT;
-	int astro = mc.AstronomyQuestion.length + tf.AstronomyQuestion.length;
-	int bio = mc.BiologyQuestion.length + tf.BiologyQuestion.length;
-	int chemist = mc.ChemistryQuestion.length + tf.ChemistryQuestion.length;
-	int earth = mc.EarthScienceQuestion.length + tf.EarthScienceQuestion.length;
-	int phys = mc.PhysicsQuestion.length + tf.PhysicsQuestion.length;
-	
+	private String username, name;
+	float astroAverage, bioAverage, chemistAverage, earthAverage, physAverage;
+	float astroHighScore, bioHighScore, chemistHighScore, earthHighScore, physHighScore;
+	float astroPoints, bioPoints, chemistPoints, earthPoints, physPoints;
+	int astroTotal, bioTotal, chemistTotal, earthTotal, physTotal;
 	int color;
-	
-	DecimalFormat df = new DecimalFormat("0.##");
+	private final DecimalFormat decimalFormat = new DecimalFormat("0.##");
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -50,14 +40,14 @@ public class StatusPageActivity extends AppCompatActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.statuspage);
 
-		Tb = findViewById(R.id.toolbar);
-		setSupportActionBar(Tb);
+		toolbar = findViewById(R.id.toolbar);
+		setSupportActionBar(toolbar);
 
 		Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setDisplayShowHomeEnabled(true);
 		
-		Tb.setNavigationOnClickListener(v -> finish());
+		toolbar.setNavigationOnClickListener(v -> finish());
 
 		txt1 = findViewById(R.id.astronomy_average);
 		txt2 = findViewById(R.id.biology_average);
@@ -65,21 +55,18 @@ public class StatusPageActivity extends AppCompatActivity
 		txt4 = findViewById(R.id.earthscience_average);
 		txt5 = findViewById(R.id.physics_average);
 
-		ed = findViewById(R.id.username_edittext);
+		edTxt = findViewById(R.id.username_edittext);
 
-		sp = getSharedPreferences("com.CrimsonKnightBlood.SciQuiz.sharedpreferences", Context.MODE_PRIVATE);
-		ap = getSharedPreferences("app_preferences", Context.MODE_PRIVATE);
-		editor = sp.edit();
+		sharedPreferences = getSharedPreferences("com.CrimsonKnightBlood.SciQuiz.sharedpreferences", Context.MODE_PRIVATE);
+		appPreferences = getSharedPreferences("app_preferences", Context.MODE_PRIVATE);
+		editor = sharedPreferences.edit();
 		
-		color = ap.getInt("color_scheme", 0);
+		color = appPreferences.getInt("color_scheme", 0);
 		ColorChange(color);
-		
-		Compute();
-		Text();
 
-		name = sp.getString("username", "Username");
-		ed.setText(name);
-		ed.addTextChangedListener(new TextWatcher() { 
+		name = sharedPreferences.getString("username", "Username");
+		edTxt.setText(name);
+		edTxt.addTextChangedListener(new TextWatcher() {
 				@Override 
 				public void beforeTextChanged(CharSequence s, int start, int count, int after)
 				{ 
@@ -89,7 +76,7 @@ public class StatusPageActivity extends AppCompatActivity
 				@Override 
 				public void onTextChanged(CharSequence s, int start, int before, int count)
 				{ 
-					username = ed.getText().toString();
+					username = edTxt.getText().toString();
 					editor.putString("username", username);
 					editor.commit();
 				} 
@@ -101,100 +88,113 @@ public class StatusPageActivity extends AppCompatActivity
 				}
 			});
 
+		MCQuestions mc = new MCQuestions();
+		astroTotal = mc.AstronomyQuestion.length + getQuestionsLength(R.raw.tf_astronomy, 1);
+		bioTotal = mc.BiologyQuestion.length + getQuestionsLength(R.raw.tf_biology, 1);
+		chemistTotal = mc.ChemistryQuestion.length + getQuestionsLength(R.raw.tf_chemistry, 1);
+		earthTotal = mc.EarthScienceQuestion.length + getQuestionsLength(R.raw.tf_earthscience, 1);
+		physTotal = mc.PhysicsQuestion.length + getQuestionsLength(R.raw.tf_physics, 1);
+
+		Compute();
+		Text();
+	}
+	
+	private int getQuestionsLength(int resource, int answerIndex) {
+		QACsvParser csv = new QACsvParser(getApplicationContext(), resource,";", answerIndex);
+		return csv.getQuestions().size();
 	}
 
 	public void ColorChange(int clr) {
 		if (clr == 0) {
-			Tb.setBackgroundColor(ContextCompat.getColor(this, R.color.lightblue_500));
+			toolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.lightblue_500));
 		} else if (clr == 1) {
-			Tb.setBackgroundColor(ContextCompat.getColor(this, R.color.lightgreen_500));
+			toolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.lightgreen_500));
 		} else if (clr == 2) {
-			Tb.setBackgroundColor(ContextCompat.getColor(this, R.color.pink_500));
+			toolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.pink_500));
 		} else if (clr == 3) {
-			Tb.setBackgroundColor(ContextCompat.getColor(this, R.color.amber_500));
+			toolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.amber_500));
 		}
 	}
 
 	public void Compute()
 	{
-		astroPT = sp.getInt("astro_mcscore", 0) + sp.getInt("astro_tfscore", 0);
-		bioPT = sp.getInt("bio_mcscore", 0) + sp.getInt("bio_tfscore", 0);
-		chemistPT = sp.getInt("chemist_mcscore", 0) + sp.getInt("chemist_tfscore", 0);
-		earthPT = sp.getInt("earth_mcscore", 0) + sp.getInt("earth_tfscore", 0);
-		physPT = sp.getInt("phys_mcscore", 0) + sp.getInt("phystfscore", 0);
+		astroPoints = sharedPreferences.getInt("astro_mcscore", 0) + sharedPreferences.getInt("astro_tfscore", 0);
+		bioPoints = sharedPreferences.getInt("bio_mcscore", 0) + sharedPreferences.getInt("bio_tfscore", 0);
+		chemistPoints = sharedPreferences.getInt("chemist_mcscore", 0) + sharedPreferences.getInt("chemist_tfscore", 0);
+		earthPoints = sharedPreferences.getInt("earth_mcscore", 0) + sharedPreferences.getInt("earth_tfscore", 0);
+		physPoints = sharedPreferences.getInt("phys_mcscore", 0) + sharedPreferences.getInt("phystfscore", 0);
 
-		astroAVG = astroPT / astro;
-		bioAVG = bioPT / bio;
-		chemistAVG = chemistPT / chemist;
-		earthAVG = earthPT / earth;
-		physAVG = physPT / phys;
+		astroAverage = astroPoints / astroTotal;
+		bioAverage = bioPoints / bioTotal;
+		chemistAverage = chemistPoints / chemistTotal;
+		earthAverage = earthPoints / earthTotal;
+		physAverage = physPoints / physTotal;
 
-		astroAVG *= 100;
-		bioAVG *= 100;
-		chemistAVG *= 100;
-		earthAVG *= 100;
-		physAVG *= 100;
+		astroAverage *= 100;
+		bioAverage *= 100;
+		chemistAverage *= 100;
+		earthAverage *= 100;
+		physAverage *= 100;
 
-		editor.putFloat("astro_avg", astroAVG);
-		editor.putFloat("bio_avg", bioAVG);
-		editor.putFloat("chemist_avg", chemistAVG);
-		editor.putFloat("earth_avg", earthAVG);
-		editor.putFloat("phs_avg", physAVG);
+		editor.putFloat("astro_avg", astroAverage);
+		editor.putFloat("bio_avg", bioAverage);
+		editor.putFloat("chemist_avg", chemistAverage);
+		editor.putFloat("earth_avg", earthAverage);
+		editor.putFloat("phs_avg", physAverage);
 		editor.commit();
 
-		astroHS = sp.getFloat("astro_avg", 0) * astro;
-		bioHS = sp.getFloat("bio_avg", 0) * bio;
-		chemistHS = sp.getFloat("chemist_avg", 0) * chemist;
-		earthHS = sp.getFloat("earth_avg", 0) * earth;
-		physHS = sp.getFloat("phys_avg", 0) * phys;
+		astroHighScore = sharedPreferences.getFloat("astro_avg", 0) * astroTotal;
+		bioHighScore = sharedPreferences.getFloat("bio_avg", 0) * bioTotal;
+		chemistHighScore = sharedPreferences.getFloat("chemist_avg", 0) * chemistTotal;
+		earthHighScore = sharedPreferences.getFloat("earth_avg", 0) * earthTotal;
+		physHighScore = sharedPreferences.getFloat("phys_avg", 0) * physTotal;
 	}
 
 	public void Text()
 	{
-		txt1.setText(df.format(astroAVG));
-		if (astroAVG >= 90) {
-			txt1.setTextColor(0xff00ff00);
-		} else if (astroAVG >= 80 && astroAVG <= 89) {
-			txt1.setTextColor(0xff0099ff);
+		txt1.setText(decimalFormat.format(astroAverage));
+		if (astroAverage >= 90) {
+			txt1.setTextColor(Color.GREEN);
+		} else if (astroAverage >= 80 && astroAverage <= 89) {
+			txt1.setTextColor(Color.YELLOW);
 		} else {
-			txt1.setTextColor(0xffff0000);
+			txt1.setTextColor(Color.RED);
 		}
 
-		txt2.setText(df.format(bioAVG));
-		if (bioAVG >= 90) {
-			txt2.setTextColor(0xff00ff00);
-		} else if (bioAVG >= 80 && bioAVG <= 89) {
-			txt2.setTextColor(0xff0099ff);
+		txt2.setText(decimalFormat.format(bioAverage));
+		if (bioAverage >= 90) {
+			txt2.setTextColor(Color.GREEN);
+		} else if (bioAverage >= 80 && bioAverage <= 89) {
+			txt2.setTextColor(Color.YELLOW);
 		} else {
-			txt2.setTextColor(0xffff0000);
+			txt2.setTextColor(Color.RED);
 		}
 
-		txt3.setText(df.format(chemistAVG));
-		if (chemistAVG >= 90) {
-			txt3.setTextColor(0xff00ff00);
-		} else if (chemistAVG >= 80 && chemistAVG <= 89) {
-			txt3.setTextColor(0xff0099ff);
+		txt3.setText(decimalFormat.format(chemistAverage));
+		if (chemistAverage >= 90) {
+			txt3.setTextColor(Color.GREEN);
+		} else if (chemistAverage >= 80 && chemistAverage <= 89) {
+			txt3.setTextColor(Color.YELLOW);
 		} else {
-			txt3.setTextColor(0xffff0000);
+			txt3.setTextColor(Color.RED);
 		}
 
-		txt4.setText(df.format(earthAVG));
-		if (earthAVG >= 90) {
-			txt4.setTextColor(0xff00ff00);
-		} else if (earthAVG >= 80 && earthAVG <= 89) {
-			txt4.setTextColor(0xff0099ff);
+		txt4.setText(decimalFormat.format(earthAverage));
+		if (earthAverage >= 90) {
+			txt4.setTextColor(Color.GREEN);
+		} else if (earthAverage >= 80 && earthAverage <= 89) {
+			txt4.setTextColor(Color.YELLOW);
 		} else {
-			txt4.setTextColor(0xffff0000);
+			txt4.setTextColor(Color.RED);
 		}
 
-		txt5.setText(df.format(physAVG));
-		if (physAVG >= 90) {
-			txt5.setTextColor(0xff00ff00);
-		} else if (physAVG >= 80 && physAVG <= 89) {
-			txt5.setTextColor(0xff0099ff);
+		txt5.setText(decimalFormat.format(physAverage));
+		if (physAverage >= 90) {
+			txt5.setTextColor(Color.GREEN);
+		} else if (physAverage >= 80 && physAverage <= 89) {
+			txt5.setTextColor(Color.YELLOW);
 		} else {
-			txt5.setTextColor(0xffff0000);
+			txt5.setTextColor(Color.RED);
 		}
 	}
-
 }
