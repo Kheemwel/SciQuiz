@@ -17,19 +17,16 @@ import java.util.*;
 
 public class StatusPageActivity extends AppCompatActivity {
 
-	private SharedPreferences sharedPreferences, appPreferences;
+	private SharedPreferences sharedPreferences;
 	private SharedPreferences.Editor editor;
-
 	private TextView txt1, txt2, txt3, txt4, txt5;
 	private EditText edTxt;
 	private Toolbar toolbar;
-
-	private String username, name;
-	float astroAverage, bioAverage, chemistAverage, earthAverage, physAverage;
-	int astroTotal, bioTotal, chemistTotal, earthTotal, physTotal;
-	int color;
+	private String username;
+	private float astroAverage, bioAverage, chemistAverage, earthAverage, physAverage;
+	private int astroTotal, bioTotal, chemistTotal, earthTotal, physTotal;
 	private final DecimalFormat decimalFormat = new DecimalFormat("0.##");
-	public final String[] SUBJECTS = {"astronomy", "biology", "chemistry", "earthscience", "physics"};
+	private final String[] SUBJECTS = {"astronomy", "biology", "chemistry", "earthscience", "physics"};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -56,13 +53,13 @@ public class StatusPageActivity extends AppCompatActivity {
 		edTxt = findViewById(R.id.username_edittext);
 
 		sharedPreferences = getSharedPreferences("com.CrimsonKnightBlood.SciQuiz.sharedpreferences", Context.MODE_PRIVATE);
-		appPreferences = getSharedPreferences("app_preferences", Context.MODE_PRIVATE);
+		SharedPreferences appPreferences = getSharedPreferences("app_preferences", Context.MODE_PRIVATE);
 		editor = sharedPreferences.edit();
-		
-		color = appPreferences.getInt("color_scheme", 0);
+
+		int color = appPreferences.getInt("color_scheme", 0);
 		ColorChange(color);
 
-		name = sharedPreferences.getString("username", "Username");
+		String name = sharedPreferences.getString("username", "Username");
 		edTxt.setText(name);
 		edTxt.addTextChangedListener(new TextWatcher() {
 				@Override 

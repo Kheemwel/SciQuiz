@@ -17,21 +17,18 @@ import android.widget.TextView;
 import java.util.*;
 
 public class TFQuiz  extends Activity {
-    SharedPreferences sharedPreferences, appPreferences;
-    SharedPreferences.Editor editor;
-    MediaPlayer correctMP, wrongMP, endMP;
-
-    LinearLayout llTitle, llItem;
-    Button btn1, btn2;
-    TextView txtTitle, txtScore, txtItem, txtQuestion;
-
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
+    private MediaPlayer correctMP, wrongMP, endMP;
+    private LinearLayout llTitle, llItem;
+    private Button btn1, btn2;
+    private TextView txtScore, txtItem, txtQuestion;
     private int questionLength;
     private int score = 0;
     private int numItems = 1;
     private int index = 0;
     private boolean answer;
-    boolean activated;
-    int color;
+    private boolean activated;
     private String cls = "";
     private List<String> questions;
     private Map<String, String> answers;
@@ -44,7 +41,7 @@ public class TFQuiz  extends Activity {
         btn1 = findViewById(R.id.tfbutton1);
         btn2 = findViewById(R.id.tfbutton2);
 
-        txtTitle = findViewById(R.id.tftitle);
+        TextView txtTitle = findViewById(R.id.tftitle);
         txtScore = findViewById(R.id.tfscore);
         txtItem = findViewById(R.id.tfitem);
         txtQuestion = findViewById(R.id.tfquestion);
@@ -52,10 +49,10 @@ public class TFQuiz  extends Activity {
         llItem = findViewById(R.id.trueorfalsequizLinearLayout2);
 
         sharedPreferences = getSharedPreferences("com.CrimsonKnightBlood.SciQuiz.sharedpreferences", Context.MODE_PRIVATE);
-        appPreferences = getSharedPreferences("app_preferences", Context.MODE_PRIVATE);
+        SharedPreferences appPreferences = getSharedPreferences("app_preferences", Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
         activated = appPreferences.getBoolean("activate_sound", true);
-        color = appPreferences.getInt("color_scheme", 0);
+        int color = appPreferences.getInt("color_scheme", 0);
         ColorChange(color);
 
         correctMP = MediaPlayer.create(this, R.raw.correct);

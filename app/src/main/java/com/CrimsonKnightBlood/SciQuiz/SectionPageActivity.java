@@ -21,18 +21,18 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class SectionPageActivity extends AppCompatActivity {
-    MediaPlayer rightMP, leftMP;
-    SharedPreferences sp;
+    private MediaPlayer rightMP, leftMP;
+    private SharedPreferences sharedPreferences;
 
-    ViewPager vp;
-    BottomNavigationView bnv;
-    FloatingActionButton Rfab, Lfab;
-    TextView txt;
-    Button btn;
+    private ViewPager viewPager;
+    private BottomNavigationView bottomNavigationView;
+    private FloatingActionButton Rfab, Lfab;
+    private TextView txt;
+    private Button btn;
 
-    static int[] pages = new int[5];
-    int color;
-    boolean activated;
+    private static int[] pages = new int[5];
+    private int color;
+    private boolean activated;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +43,7 @@ public class SectionPageActivity extends AppCompatActivity {
         Lfab = findViewById(R.id.arrowleft_floatingbutton);
         txt = findViewById(R.id.sectionpageTextView1);
         btn = findViewById(R.id.sectionpageButton1);
-        bnv = findViewById(R.id.bottomnavigation_sectionpage);
+        bottomNavigationView = findViewById(R.id.bottomnavigation_sectionpage);
 
         Configuration ScreenSize = getResources().getConfiguration();
         if (ScreenSize.screenHeightDp >= 600) {
@@ -60,8 +60,8 @@ public class SectionPageActivity extends AppCompatActivity {
             pages[4] = R.layout.physics_page;
         }
 
-        sp = getSharedPreferences("app_preferences", Context.MODE_PRIVATE);
-        activated = sp.getBoolean("activate_sound", true);
+        sharedPreferences = getSharedPreferences("app_preferences", Context.MODE_PRIVATE);
+        activated = sharedPreferences.getBoolean("activate_sound", true);
         rightMP = MediaPlayer.create(this, R.raw.swoosh_right);
         leftMP = MediaPlayer.create(this, R.raw.swish_left);
 
@@ -75,16 +75,16 @@ public class SectionPageActivity extends AppCompatActivity {
             leftMP = MediaPlayer.create(getApplication(), R.raw.swish_left);
         });
 
-        color = sp.getInt("color_scheme", 0);
+        color = sharedPreferences.getInt("color_scheme", 0);
         ColorChange(color);
 
-        vp = findViewById(R.id.section_viewpager);
-        vp.setAdapter(new PageAdapter(pages));
-        vp.setCurrentItem(2);
-        vp.beginFakeDrag();
+        viewPager = findViewById(R.id.section_viewpager);
+        viewPager.setAdapter(new PageAdapter(pages));
+        viewPager.setCurrentItem(2);
+        viewPager.beginFakeDrag();
 
 
-        bnv.setOnItemSelectedListener(item -> {
+        bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.status_nav) {
                 Intent i = new Intent(SectionPageActivity.this, StatusPageActivity.class);
@@ -98,6 +98,7 @@ public class SectionPageActivity extends AppCompatActivity {
             return true;
         });
     }
+
     public static class PageAdapter extends PagerAdapter {
 
         private final int[] pages;
@@ -138,34 +139,34 @@ public class SectionPageActivity extends AppCompatActivity {
                 btn.setBackgroundResource(R.drawable.bluebutton);
                 Rfab.setBackgroundTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.blue_700));
                 Lfab.setBackgroundTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.blue_700));
-                bnv.setItemBackgroundResource(R.color.cyan_700);
+                bottomNavigationView.setItemBackgroundResource(R.color.cyan_700);
                 break;
             case 1:
                 txt.setBackgroundResource(R.color.teal_500);
                 btn.setBackgroundResource(R.drawable.greenbutton);
                 Rfab.setBackgroundTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.green_700));
                 Lfab.setBackgroundTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.green_700));
-                bnv.setItemBackgroundResource(R.color.teal_700);
+                bottomNavigationView.setItemBackgroundResource(R.color.teal_700);
                 break;
             case 2:
                 txt.setBackgroundResource(R.color.deeppurple_500);
                 btn.setBackgroundResource(R.drawable.purplebutton);
                 Rfab.setBackgroundTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.purple_700));
                 Lfab.setBackgroundTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.purple_700));
-                bnv.setItemBackgroundResource(R.color.deeppurple_700);
+                bottomNavigationView.setItemBackgroundResource(R.color.deeppurple_700);
                 break;
             case 3:
                 txt.setBackgroundResource(R.color.deeporange_500);
                 btn.setBackgroundResource(R.drawable.orangebutton);
                 Rfab.setBackgroundTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.orange_700));
                 Lfab.setBackgroundTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.orange_700));
-                bnv.setItemBackgroundResource(R.color.deeporange_700);
+                bottomNavigationView.setItemBackgroundResource(R.color.deeporange_700);
                 break;
         }
     }
 
     public void StartQuiz(View v) {
-        int page = vp.getCurrentItem();
+        int page = viewPager.getCurrentItem();
         Intent intent = new Intent(this, QuizSectionActivity.class);
         String cls = "";
 
@@ -216,41 +217,41 @@ public class SectionPageActivity extends AppCompatActivity {
 
     public void ArrowRight(View v) {
         SwooshRight();
-        vp.setCurrentItem(vp.getCurrentItem() + 1);
+        viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
         FloatButton();
     }
 
     public void ArrowLeft(View v) {
         SwishLeft();
-        vp.setCurrentItem(vp.getCurrentItem() - 1);
+        viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
         FloatButton();
     }
 
     private void FloatButton() {
-        if (vp.getCurrentItem() == 4) {
+        if (viewPager.getCurrentItem() == 4) {
             Rfab.setVisibility(View.GONE);
-        } else if (vp.getCurrentItem() != 4) {
+        } else if (viewPager.getCurrentItem() != 4) {
             Rfab.setVisibility(View.VISIBLE);
         }
 
-        if (vp.getCurrentItem() == 0) {
+        if (viewPager.getCurrentItem() == 0) {
             Lfab.setVisibility(View.GONE);
-        } else if (vp.getCurrentItem() != 0) {
+        } else if (viewPager.getCurrentItem() != 0) {
             Lfab.setVisibility(View.VISIBLE);
         }
     }
 
     private void EXIT() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setCancelable(false);
-        builder.setTitle("Exit");
-        builder.setMessage("Are you sure you want to leave?");
+        new AlertDialog.Builder(this)
+                .setCancelable(false)
+                .setTitle("Exit")
+                .setMessage("Are you sure you want to leave?")
 
-        builder.setPositiveButton("YES", (dialog, which) -> finish());
+                .setPositiveButton("YES", (dialog, which) -> finish())
 
-        builder.setNegativeButton("NO", (dialog, which) -> dialog.dismiss());
+                .setNegativeButton("NO", (dialog, which) -> dialog.dismiss())
 
-        builder.create().show();
+                .create().show();
     }
 
     @Override
@@ -261,9 +262,8 @@ public class SectionPageActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        activated = sp.getBoolean("activate_sound", true);
-        color = sp.getInt("color_scheme", 0);
+        activated = sharedPreferences.getBoolean("activate_sound", true);
+        color = sharedPreferences.getInt("color_scheme", 0);
         ColorChange(color);
     }
-
 }

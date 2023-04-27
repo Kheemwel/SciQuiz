@@ -16,7 +16,7 @@ public class TitleActivity extends Activity
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
 			Intent transition = new Intent(TitleActivity.this, SectionPageActivity.class);
             finish();
-			startActivity(transition);
+            startActivity(transition);
 		}, 3000);
     }
 }

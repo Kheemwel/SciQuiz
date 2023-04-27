@@ -17,16 +17,11 @@ import java.util.Objects;
 
 public class OptionsPageActivity extends AppCompatActivity
 {
-	private Toolbar Tb;
-	SwitchCompat sw;
-	ImageView img;
-	RadioGroup colorscheme;
-	RadioButton bluehue, greenhue, purplehue, orangehue;
-
-	SharedPreferences sp;
-	SharedPreferences.Editor editor;
-	
-	int color, scheme;
+	private Toolbar toolbar;
+	private SwitchCompat switchCompat;
+	private ImageView imageView;
+	private SharedPreferences.Editor editor;
+	private int scheme;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -34,34 +29,34 @@ public class OptionsPageActivity extends AppCompatActivity
 		// TODO: Implement this method
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.optionspage);
+
+		SharedPreferences sharedPreferences = getSharedPreferences("app_preferences", Context.MODE_PRIVATE);
+		editor = sharedPreferences.edit();
 		
-		sp = getSharedPreferences("app_preferences", Context.MODE_PRIVATE);
-		editor = sp.edit();
+		imageView = findViewById(R.id.sound_image);
+		switchCompat = findViewById(R.id.sound_option);
+		RadioGroup colorscheme = findViewById(R.id.radiogroup1);
+		RadioButton bluehue = findViewById(R.id.radiobutton1);
+		RadioButton greenhue = findViewById(R.id.radiobutton2);
+		RadioButton purplehue = findViewById(R.id.radiobutton3);
+		RadioButton orangehue = findViewById(R.id.radiobutton4);
 		
-		img = findViewById(R.id.sound_image);
-		sw = findViewById(R.id.sound_option);
-		colorscheme = findViewById(R.id.radiogroup1);
-		bluehue = findViewById(R.id.radiobutton1);
-		greenhue = findViewById(R.id.radiobutton2);
-		purplehue = findViewById(R.id.radiobutton3);
-		orangehue = findViewById(R.id.radiobutton4);
-		
-		sw.setChecked(sp.getBoolean("activate_sound", true));
-		if(sw.isChecked()) {
-			img.setImageResource(R.drawable.sound_on);
+		switchCompat.setChecked(sharedPreferences.getBoolean("activate_sound", true));
+		if(switchCompat.isChecked()) {
+			imageView.setImageResource(R.drawable.sound_on);
 		} else {
-			img.setImageResource(R.drawable.sound_off);
+			imageView.setImageResource(R.drawable.sound_off);
 		}
 		
-		Tb = findViewById(R.id.toolbar);
-		setSupportActionBar(Tb);
+		toolbar = findViewById(R.id.toolbar);
+		setSupportActionBar(toolbar);
 		
 		Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
-		Tb.setNavigationIcon(R.drawable.abc_ic_ab_back_material);
+		toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_material);
 
-        Tb.setNavigationOnClickListener(v -> finish());
-		
-		color = sp.getInt("color_scheme", 0);
+        toolbar.setNavigationOnClickListener(v -> finish());
+
+		int color = sharedPreferences.getInt("color_scheme", 0);
 		if(color == 0) {
 			bluehue.setChecked(true);
 		} else if(color == 1) {
@@ -105,12 +100,12 @@ public class OptionsPageActivity extends AppCompatActivity
 	}
 	
 	public void OptionSave() {
-		if(sw.isChecked()) {
-			img.setImageResource(R.drawable.sound_on);
+		if(switchCompat.isChecked()) {
+			imageView.setImageResource(R.drawable.sound_on);
 			editor.putBoolean("activate_sound", true);
 			editor.apply();
 		} else {
-			img.setImageResource(R.drawable.sound_off);
+			imageView.setImageResource(R.drawable.sound_off);
 			editor.putBoolean("activate_sound", false);
 			editor.apply();
 		}
@@ -122,13 +117,13 @@ public class OptionsPageActivity extends AppCompatActivity
 	
 	public void ColorChange(int clr) {
 		if(clr == 0) {
-			Tb.setBackgroundResource(R.color.lightblue_500);
+			toolbar.setBackgroundResource(R.color.lightblue_500);
 		} else if(clr == 1) {
-			Tb.setBackgroundResource(R.color.lightgreen_500);
+			toolbar.setBackgroundResource(R.color.lightgreen_500);
 		} else if(clr == 2) {
-			Tb.setBackgroundResource(R.color.pink_500);
+			toolbar.setBackgroundResource(R.color.pink_500);
 		} else if(clr == 3) {
-			Tb.setBackgroundResource(R.color.amber_500);
+			toolbar.setBackgroundResource(R.color.amber_500);
 		}
 	}
 	

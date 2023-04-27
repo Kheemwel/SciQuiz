@@ -11,16 +11,14 @@ import android.os.Looper;
 import java.util.Date;
 
 public class MainActivity extends Activity {
-    SharedPreferences sp;
-    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        sp = getSharedPreferences("app_preferences", Context.MODE_PRIVATE);
-        editor = sp.edit();
+        SharedPreferences sp = getSharedPreferences("app_preferences", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
 
         Date date = new Date();
 
@@ -28,7 +26,7 @@ public class MainActivity extends Activity {
 
         editor.putInt("played_times", times);
         editor.putString("last_played", date.toString());
-        editor.commit();
+        editor.apply();
 
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             Intent transition = new Intent(MainActivity.this, TitleActivity.class);
